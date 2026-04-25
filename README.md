@@ -1,2 +1,7 @@
-# Lab_test_FPGA
-For the Lab test
+Lab_test_FPGA
+===================
+
+
+#Q1.
+![Question](images/Question.png)
+
