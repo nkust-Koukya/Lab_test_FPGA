@@ -13,11 +13,13 @@ module trafficLight_testbench( );
 	initial begin
 		#10 reset = 1;
 		#10 reset = 0;
+		#1200 reset = 1;
+		#10 reset = 0; 
 	end
 	
 	initial forever #10 clk = ~clk;
 	initial $monitor($time, " light = %b", light);
-	initial #1000 $finish;
+	initial #1500 $finish;
 	
 		
 endmodule

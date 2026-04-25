@@ -49,9 +49,9 @@ end
 always@(*)begin//current_state
 	case(current_state)
 	state_close: next_state = state_red;
-	state_red  : next_state =(timer_red == 10)? state_green : state_red;
-	state_green: next_state =(timer_green == 8)? state_yellow : state_green;
-	state_yellow:next_state =(timer_yellow == 2)? state_red : state_yellow;
+	state_red  : next_state =(timer_red == 9)? state_green : state_red;
+	state_green: next_state =(timer_green == 7)? state_yellow : state_green;
+	state_yellow:next_state =(timer_yellow == 1)? state_red : state_yellow;
 	endcase
 end
 
