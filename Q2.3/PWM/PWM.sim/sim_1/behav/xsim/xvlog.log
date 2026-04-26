@@ -1,0 +1,4 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "G:/Master/lab/test/Verilog/Q2.3/src/PWM.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module pwm
+INFO: [VRFC 10-2263] Analyzing Verilog file "G:/Master/lab/test/Verilog/Q2.3/PWM/PWM.srcs/sim_1/new/PWM_testbench.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module testbench
