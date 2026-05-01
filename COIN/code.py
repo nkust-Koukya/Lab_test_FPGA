@@ -3,9 +3,13 @@ import numpy as np
 import os
 import time
 
-def Transform():
-    imgpath = os.path.join("images", "pic3.jpg")
-    img = cv2.imread(imgpath)
+
+def show_image(title, img):
+    cv2.imshow(title, img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+def Transform(img):
 
     if img is None:
         print("Image load failed")
@@ -13,37 +17,25 @@ def Transform():
 
     start = time.time()
 
-    # ✅ 1. resize（最重要）
-    img = cv2.resize(img, (640, 480))
-
-    # ✅ 2. 灰階
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    # ✅ 3. 輕量模糊
-    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    thresh, output = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+    
+    erode_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
+    erode = cv2.erode(output, erode_kernel)
 
-    # ❌ 不需要 Canny（已移除）
+    dilate = cv2.dilate(erode, erode_kernel)
 
-    # ✅ 4. Hough Circle（正確輸入）
-    circles = cv2.HoughCircles(
-        blur,
-        cv2.HOUGH_GRADIENT,
-        dp=1.2,
-        minDist=80,
-        param1=100,
-        param2=30,
-        minRadius=30,
-        maxRadius=120
-    )
+
+    output = cv2.GaussianBlur(dilate, (5,5), 2)
+    circles = cv2.HoughCircles(output,cv2.HOUGH_GRADIENT,dp=1.5,minDist=output.shape[0]//8,param1=100,param2= 50 ,minRadius=0,maxRadius=100)
 
     if circles is not None:
         circles = np.uint16(np.around(circles))
 
         for (x, y, r) in circles[0, :]:
-            # 畫圓
             cv2.circle(img, (x, y), r, (0, 0, 255), 2)
 
-            # bounding box
             x1, y1 = x - r, y - r
             cv2.rectangle(img, (x1, y1), (x+r, y+r), (0,255,0), 2)
 
@@ -55,9 +47,23 @@ def Transform():
     end = time.time()
     print(f"Time: {end-start:.4f} sec")
 
-    cv2.imshow("Result", img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    return img , output
+
+def video():
+    video_path = os.path.join( "videos","coin2.mp4")
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print("Error opening video file")
+        exit()
+    while True:
+        ret , frame = cap.read()
+        if not ret:
+            break
+        frame , dilate= Transform(frame)
+        cv2.imshow("Video", frame)
+        cv2.imshow("Dilate", dilate)
+        if cv2.waitKey(30) & 0xFF == ord('q'):
+            break
 
 if __name__ == "__main__":
-    Transform()
+    video()
