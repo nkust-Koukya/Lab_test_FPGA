@@ -5,7 +5,7 @@
 ### 主要CODE
 ```python
 
-    轉換成灰階
+    **轉換成灰階**
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)   
 
     做二值化 閥值設在150 
