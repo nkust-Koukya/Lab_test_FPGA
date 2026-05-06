@@ -9,10 +9,10 @@ parameter state_close  = 2'd0,
 		  state_yellow = 2'd3;
 
 燈的輸出
-parameter red 	 = 2'd0,
-		  green  = 2'd1,
-		  yellow = 2'd2,
-		  close  = 2'd3;
+parameter red 	 = 2'd0, 00
+		  green  = 2'd1, 01
+		  yellow = 2'd2, 10
+		  close  = 2'd3; 11
 
 重置
 always@(posedge clk or posedge reset)begin// reset
@@ -65,8 +65,7 @@ always@(*)begin//light
 	state_yellow:light = yellow;
 	endcase
 ```
-##### 紅燈狀態為00 綠燈為01 黃燈為 10 
-###Testbench
+### Testbench
 ```verilog
     initial begin
 		clk = 0;
