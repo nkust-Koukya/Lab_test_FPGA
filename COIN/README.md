@@ -5,7 +5,7 @@
 ### 主要CODE
 ```python
 
-    **轉換成灰階**
+    轉換成灰階
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)   
 
     做二值化 閥值設在150 
@@ -29,6 +29,22 @@
     minRadius,maxRadius = 最小,最大圓半徑
     circles = cv2.HoughCircles(output,cv2.HOUGH_GRADIENT,dp=1.5,minDist=output.shape[0]//8,param1=100,param2= 50 ,minRadius=0,maxRadius=100)
 ```
+### 繪製外框
+```python
+if circles is not None:
+        circles = np.uint16(np.around(circles))
 
+        for (x, y, r) in circles[0, :]:
+            cv2.circle(img, (x, y), r, (0, 0, 255), 2)
+
+            x1, y1 = x - r, y - r
+            cv2.rectangle(img, (x1, y1), (x+r, y+r), (0,255,0), 2)
+
+            cv2.putText(img, f"({x1},{y1})",
+                        (x1, y1-5),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.5, (0,255,0), 2)
+
+```
 ### 左側為輸入影片及添加框後的影片 右側為前處理後的中途影片
 ![result1](images/result1.png)
