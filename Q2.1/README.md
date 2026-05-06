@@ -65,9 +65,25 @@ always@(*)begin//light
 	state_yellow:light = yellow;
 	endcase
 ```
-##### 使用狀態機做出現在及之後狀態
 ##### 紅燈狀態為00 綠燈為01 黃燈為 10 
-![testbench](images/testbench.png)
+###Testbench
+```verilog
+    initial begin
+		clk = 0;
+		reset = 0;
+	end
+	
+	initial begin
+		#10 reset = 1;
+		#10 reset = 0;
+	    #1200 reset = 1;
+		#10 reset = 0; 
+	end
+	
+	initial forever #10 clk = ~clk;
+	initial $monitor($time, " light = %b", light);
+	initial #1500 $finish;
+```
 
 ![behavioral](images/behavioral.png)
 
