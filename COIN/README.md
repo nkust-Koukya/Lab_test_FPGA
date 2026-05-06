@@ -47,4 +47,11 @@ if circles is not None:
 
 ```
 ### 左側為輸入影片及添加框後的影片 右側為前處理後的中途影片
-![result1](images/result1.png)
+#### 示範影片
+![draw1](gifs/draw2.gif)
+![dilate1](gifs/dilate2.gif)
+
+#### 其他影片
+![draw2](gifs/draw.gif)
+![dilate2](gifs/dilate.gif)
+
