@@ -33,13 +33,20 @@
 ```python
 if circles is not None:
         circles = np.uint16(np.around(circles))
-
+        
+        circles = (x座標,y座標,半徑)
         for (x, y, r) in circles[0, :]:
+
+            根據參數畫圓
             cv2.circle(img, (x, y), r, (0, 0, 255), 2)
 
+            將圓心(x,y)各減去一次半徑 找到左上角
             x1, y1 = x - r, y - r
+
+            把左上端點到右下端點框起來
             cv2.rectangle(img, (x1, y1), (x+r, y+r), (0,255,0), 2)
 
+            在框上放字
             cv2.putText(img, f"({x1},{y1})",
                         (x1, y1-5),
                         cv2.FONT_HERSHEY_SIMPLEX,
