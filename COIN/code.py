@@ -19,16 +19,15 @@ def Transform(img):
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    thresh, output = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+    thresh, output = cv2.threshold(gray, 120, 255, cv2.THRESH_BINARY)
     
     erode_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
     erode = cv2.erode(output, erode_kernel)
-
     dilate = cv2.dilate(erode, erode_kernel)
 
-
     output = cv2.GaussianBlur(dilate, (5,5), 2)
-    circles = cv2.HoughCircles(output,cv2.HOUGH_GRADIENT,dp=1.5,minDist=output.shape[0]//8,param1=100,param2= 50 ,minRadius=0,maxRadius=100)
+
+    circles = cv2.HoughCircles(output,cv2.HOUGH_GRADIENT_ALT,dp=1.5,minDist=output.shape[0]//15,param1=300,param2= 0.9 ,minRadius=10,maxRadius=100)
 
     if circles is not None:
         circles = np.uint16(np.around(circles))
@@ -49,21 +48,39 @@ def Transform(img):
 
     return img , output
 
-def video():
-    video_path = os.path.join( "videos","coin2.mp4")
+def video(output):
+    video_path = os.path.join( "videos","coin3.mp4")
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
         print("Error opening video file")
+        exit()
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out_draw = cv2.VideoWriter('draw.mp4', fourcc, fps, (width, height))
+    out_dilate = cv2.VideoWriter('dilate.mp4', fourcc, fps, (width, height))
+    if not out_draw.isOpened() or not out_dilate.isOpened():
+        print("Error creating video writer")
+        cap.release()
         exit()
     while True:
         ret , frame = cap.read()
         if not ret:
             break
         frame , dilate= Transform(frame)
+        dilate_color = cv2.cvtColor(dilate, cv2.COLOR_GRAY2BGR)
+        if output == True:
+            out_dilate.write(dilate_color)
+            out_draw.write(frame)
         cv2.imshow("Video", frame)
         cv2.imshow("Dilate", dilate)
         if cv2.waitKey(30) & 0xFF == ord('q'):
             break
+    cap.release()
+    out_dilate.release()
+    out_draw.release()
 
 if __name__ == "__main__":
-    video()
+    output_video = True
+    video(output_video)
