@@ -84,7 +84,7 @@ always@(*)begin//light
 	initial $monitor($time, " light = %b", light);
 	initial #1500 $finish;
 ```
-
+##### 紅燈:00 綠燈:01 黃燈:10 關閉:11
 ![behavioral](images/behavioral.png)
 
 ![monitor](images/monitor.png)
